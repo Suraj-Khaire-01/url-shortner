@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>URL Shortener</h1>
+    
+    <form action="/shorten" method="POST" class="url-form">
+      <input type="url" name="longUrl" placeholder="Enter a long URL" required>
+      <button type="submit">Shorten</button>
+    </form>
+    
+    <% if (error) { %>
+      <div class="error-message">
+        <%= error %>
+      </div>
+    <% } %>
+    
+    <div class="urls-container">
+      <% if (urls && urls.length > 0) { %>
+        <h2>Your Shortened URLs</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Original URL</th>
+              <th>Short URL</th>
+              <th>Clicks</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% urls.forEach(url => { %>
+              <tr>
+                <td class="long-url"><a href="<%= url.longUrl %>" target="_blank"><%= url.longUrl %></a></td>
+                <td>
+                  <a href="<%= url.shortUrl %>" target="_blank" class="short-url">
+                    <%= url.shortUrl %>
+                  </a>
+                  <button class="copy-btn" data-url="<%= url.shortUrl %>">Copy</button>
+                </td>
+                <td><%= url.clicks %></td>
+                <td><%= new Date(url.createdAt).toLocaleDateString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p class="no-urls">No URLs shortened yet</p>
+      <% } %>
+    </div>
+  </div>
+  
+  <script src="/js/script.js"></script>
+</body>
+</html>
